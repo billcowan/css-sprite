@@ -32,13 +32,18 @@ module.exports = function(grunt) {
     });
 
     var done = this.async();
+    var count = this.files.length;
+    
     this.files.forEach(function(f) {
       options.src = f.orig.src;
       options.name = path.basename(f.dest);
       options.out = path.dirname(f.dest);
       sprite.create(options, function () {
+        count--;
         grunt.log.writeln('File ' + f.dest + ' created.');
-        done();
+        if (count <= 0) {
+          done(); 
+        }
       });
     });
 
